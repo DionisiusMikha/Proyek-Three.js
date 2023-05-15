@@ -5,7 +5,7 @@ var renderer = new THREE.WebGLRenderer();
 renderer.setSize(innerWidth, innerHeight);
 cam.position.z = 2;
 
-const wibu = new THREE.TextureLoader().load("./src/assets/anime_wallpaper_01.png");
+const wibu = new THREE.TextureLoader().load("./src/assets/image.jpg");
 
 var box = new THREE.BoxGeometry(1,1,1);
 var box_mat = new THREE.MeshBasicMaterial(
