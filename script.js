@@ -43,6 +43,9 @@ renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 const temploader = new THREE.TextureLoader();
 scene.background = temploader.load('./assets/background.jpeg');
 
+const gltfGroup = new THREE.Group();
+scene.add(gltfGroup);
+
 // Tambahkan renderer ke body
 document.body.appendChild(renderer.domElement);
 
@@ -66,6 +69,111 @@ loader.load(
 
         console.log(map);
         scene.add(map);
+    }
+)
+
+let mobil_1;
+loader.load(
+    './assets/car_1.gltf',
+    function (gltf) {
+        // mobil_1 = gltf.scene;
+        mobil_1 = gltf.scene;
+        mobil_1.scale.set(0.19, 0.19, 0.19);
+        // mobil_1.scale.set(1, 1, 1);
+
+        mobil_1.traverse(function (child) {
+            if (child.isMesh) {
+                child.receiveShadow = true;
+            }
+        });
+        mobil_1.castShadow = true;
+        mobil_1.position.set(12.95, 1.08, 9);
+
+        // const box = new THREE.Box3().setFromObject(mobil_1);
+        // mobilCenter = box.getCenter(new THREE.Vector3());
+
+        // Tambahkan objek GLTF ke objek grup
+        // gltfGroup.add(mobil_1);
+
+        console.log(mobil_1);
+        scene.add(mobil_1);
+    }
+)
+
+let mobil_2;
+loader.load(
+    './assets/car_2.gltf',
+    function (gltf) {
+        // mobil_1 = gltf.scene;
+        mobil_2 = gltf.scene;
+        mobil_2.scale.set(0.19, 0.19, 0.19);
+        // mobil_1.scale.set(1, 1, 1);
+
+        mobil_2.traverse(function (child) {
+            if (child.isMesh) {
+                child.receiveShadow = true;
+            }
+        });
+        mobil_2.castShadow = true;
+        mobil_2.position.set(-5, 1.042, -2.6);
+
+        // const box = new THREE.Box3().setFromObject(mobil_1);
+        // mobilCenter = box.getCenter(new THREE.Vector3());
+
+        // Tambahkan objek GLTF ke objek grup
+        // gltfGroup.add(mobil_1);
+
+        console.log(mobil_2);
+        scene.add(mobil_2);
+    }
+)
+
+let mobil_3;
+loader.load(
+    './assets/car_3.gltf',
+    function (gltf) {
+        mobil_3 = gltf.scene;
+        mobil_3.scale.set(0.19, 0.19, 0.19);
+
+        mobil_3.traverse(function (child) {
+            if (child.isMesh) {
+                child.receiveShadow = true;
+            }
+        });
+
+        mobil_3.castShadow = true;
+        mobil_3.position.set(8, 1.29, 1.9);
+        mobil_3.rotateX(2.53);
+
+        // const box = new THREE.Box3().setFromObject(mobil_1);
+        // mobilCenter = box.getCenter(new THREE.Vector3());
+
+        // Tambahkan objek GLTF ke objek grup
+        // gltfGroup.add(mobil_1);
+
+        console.log(mobil_3);
+        scene.add(mobil_3);
+    }
+)
+
+let mobil_4;
+loader.load(
+    './assets/car_4.gltf',
+    function (gltf) {
+        mobil_4 = gltf.scene;
+        mobil_4.scale.set(0.19, 0.19, 0.19);
+
+        mobil_4.traverse(function (child) {
+            if (child.isMesh) {
+                child.receiveShadow = true;
+            }
+        });
+
+        mobil_4.castShadow = true;
+        mobil_4.position.set(8.5, 1.34, 1.9);
+
+        console.log(mobil_4);
+        scene.add(mobil_4);
     }
 )
 
@@ -99,26 +207,6 @@ loader.load(
     }
 )
 
-let mobil_1;
-loader.load(
-    './assets/car_1.gltf',
-    function (gltf) {
-        mobil_1 = gltf.scene;
-        mobil_1.scale.set(0.19, 0.19, 0.19);
-
-        mobil_1.traverse(function (child) {
-            if (child.isMesh) {
-                child.receiveShadow = true;
-            }
-        });
-        mobil_1.castShadow = true;
-        mobil_1.position.set(0.7, 0.05, 0);
-
-        console.log(mobil_1);
-        scene.add(mobil_1);
-    }
-)
-
 // Buat directional light
 var light = new THREE.DirectionalLight(0xffffff, 1);
 light.position.set(5, 10, 10)
@@ -140,7 +228,7 @@ scene.add(light);
 // Inisialisasi OrbitControls
 var controls = new OrbitControls(camera, renderer.domElement);
 
-// Konfigurasi kontrol kamera
+// // Konfigurasi kontrol kamera
 // controls.enableDamping = true;
 // controls.enabled = false;
 // camera.lookAt(5, 5, 5);
@@ -151,31 +239,31 @@ var controls = new OrbitControls(camera, renderer.domElement);
 // controls.target.set(xMobil, yMobil, zMobil);
 
 // Pendengar acara pada tombol keyboard
-// document.addEventListener('keydown', function(event) {
-//     const keyCode = event.keyCode;
-//     if (keyCode === 87) { // Tombol "W" ditekan
-//         isMovingForward = true;
-//     } else if (keyCode === 83) { // Tombol "S" ditekan
-//         isMovingBackward = true;
-//     } else if (keyCode === 65) { // Tombol "A" ditekan
-//         isTurningLeft = true;
-//     } else if (keyCode === 68) { // Tombol "D" ditekan
-//         isTurningRight = true;
-//     }
-// });
+document.addEventListener('keydown', function(event) {
+    const keyCode = event.keyCode;
+    if (keyCode === 87) { // Tombol "W" ditekan
+        isMovingForward = true;
+    } else if (keyCode === 83) { // Tombol "S" ditekan
+        isMovingBackward = true;
+    } else if (keyCode === 65) { // Tombol "A" ditekan
+        isTurningLeft = true;
+    } else if (keyCode === 68) { // Tombol "D" ditekan
+        isTurningRight = true;
+    }
+});
 
-// document.addEventListener('keyup', function(event) {
-//     const keyCode = event.keyCode;
-//     if (keyCode === 87) { // Tombol "W" dilepas
-//         isMovingForward = false;
-//     } else if (keyCode === 83) { // Tombol "S" dilepas
-//         isMovingBackward = false;
-//     } else if (keyCode === 65) { // Tombol "A" dilepas
-//         isTurningLeft = false;
-//     } else if (keyCode === 68) { // Tombol "D" dilepas
-//         isTurningRight = false;
-//     }
-// });
+document.addEventListener('keyup', function(event) {
+    const keyCode = event.keyCode;
+    if (keyCode === 87) { // Tombol "W" dilepas
+        isMovingForward = false;
+    } else if (keyCode === 83) { // Tombol "S" dilepas
+        isMovingBackward = false;
+    } else if (keyCode === 65) { // Tombol "A" dilepas
+        isTurningLeft = false;
+    } else if (keyCode === 68) { // Tombol "D" dilepas
+        isTurningRight = false;
+    }
+});
 
 // controls.addEventListener('change', function () {
 //     xCamera = controls.object.position.x;
@@ -183,65 +271,158 @@ var controls = new OrbitControls(camera, renderer.domElement);
 //     zCamera = controls.object.position.z;
 // });
 
-// function updateMobilPosition(delta) {
-//     if (isMovingForward) {
-//         mobil_player.translateX(moveSpeed);
-//         xMobil = mobil_player.position.x;
-//         zMobil = mobil_player.position.z;
-//     } else if (isMovingBackward) {
-//         mobil_player.translateX(-moveSpeed);
-//         xMobil = mobil_player.position.x;
-//         xMobil = mobil_player.position.x;
-//         zMobil = mobil_player.position.z;
-//     }
+function updateMobilPosition(delta) {
+    if (isMovingForward) {
+        mobil_player.translateX(moveSpeed);
+        xMobil = mobil_player.position.x;
+        zMobil = mobil_player.position.z;
+    } else if (isMovingBackward) {
+        mobil_player.translateX(-moveSpeed);
+        xMobil = mobil_player.position.x;
+        xMobil = mobil_player.position.x;
+        zMobil = mobil_player.position.z;
+    }
 
-//     // Rotasi belok kiri/kanan
-//     if (isTurningLeft && isMovingForward) {
-//         mobil_player.rotateY(turnSpeed);
-//         xMobil = mobil_player.position.x;
-//         zMobil = mobil_player.position.z;
-//     } else if (isTurningRight && isMovingForward) {
-//         mobil_player.rotateY(-turnSpeed);
-//         xMobil = mobil_player.position.x;
-//         zMobil = mobil_player.position.z;
-//     }
+    // Rotasi belok kiri/kanan
+    if (isTurningLeft && isMovingForward) {
+        mobil_player.rotateY(turnSpeed);
+        xMobil = mobil_player.position.x;
+        zMobil = mobil_player.position.z;
+    } else if (isTurningRight && isMovingForward) {
+        mobil_player.rotateY(-turnSpeed);
+        xMobil = mobil_player.position.x;
+        zMobil = mobil_player.position.z;
+    }
 
-//     if (isTurningLeft && isMovingBackward) {
-//         mobil_player.rotateY(-turnSpeed);
-//         xMobil = mobil_player.position.x;
-//         zMobil = mobil_player.position.z;
-//     } else if (isTurningRight && isMovingBackward) {
-//         mobil_player.rotateY(turnSpeed);
-//         xMobil = mobil_player.position.x;
-//         zMobil = mobil_player.position.z;
-//     }
+    if (isTurningLeft && isMovingBackward) {
+        mobil_player.rotateY(-turnSpeed);
+        xMobil = mobil_player.position.x;
+        zMobil = mobil_player.position.z;
+    } else if (isTurningRight && isMovingBackward) {
+        mobil_player.rotateY(turnSpeed);
+        xMobil = mobil_player.position.x;
+        zMobil = mobil_player.position.z;
+    }
 
-//     if (mobil_player) {
-//         camera.position.copy(mobil_player.position).add(cameraOffset);
-//         camera.lookAt(mobil_player.position);
-//     }
+    if (mobil_player) {
+        camera.position.copy(mobil_player.position).add(cameraOffset);
+        camera.lookAt(mobil_player.position);
+    }
 
-//     controls.target.set(xMobil, yMobil, zMobil);
-//     camera.position.set(xCamera, yCamera, zCamera);
-//     controls.enabled = false;
-//     camera.lookAt(xMobil, yMobil, zMobil);
-//     controls.enabled = true;
+    controls.target.set(xMobil, yMobil, zMobil);
+    camera.position.set(xCamera, yCamera, zCamera);
+    controls.enabled = false;
+    camera.lookAt(xMobil, yMobil, zMobil);
+    controls.enabled = true;
 
-//     // Pembaruan animasi mixer
-//     if (mixer) {
-//         mixer.update(delta);
-//     }
-// }
+    // Pembaruan animasi mixer
+    if (mixer) {
+        mixer.update(delta);
+    }
+}
+
+let mobil_1_is_moving_forward = false;
+let mobil_1_is_turning_left = false;
 
 function mobil_1_jalan(delta){
-    if(mobil_1.position.z > -2.9){
+    if(mobil_1.position.z > 3.7){
+        mobil_1_is_moving_forward = true;
+    }else if(mobil_1.position.z <= 3.7 && mobil_1.position.x > 12.467){
+        mobil_1_is_turning_left = true;
+    }else if(mobil_1.position.x <= 12.467 && mobil_1.position.x > 7.7){
+        mobil_1_is_turning_left = false;
+    }else if(mobil_1.position.x <= 7.7 && mobil_1.position.z > 3 && mobil_1.position.z < 3.62){
+        mobil_1_is_turning_left = true;
+    }else if(mobil_1.position.z >= 3.62 && mobil_1.position.z <= 9.5 && mobil_1.position.x < 7.2){
+        mobil_1_is_turning_left = false;
+    }
+    if(mobil_1.position.z > 9.5 && mobil_1.position.z < 10.013378083){
+        mobil_1_is_turning_left = true;
+    }else if(mobil_1.position.z >= 10.013378083 && mobil_1.position.z < 10.06 && mobil_1.position.x < 10){
+        mobil_1_is_turning_left = false;
+    }else if(mobil_1.position.x >= 10 && mobil_1.position.z >= 10.06 && mobil_1.position.z >= 10.06){
+        mobil_1_is_moving_forward = false;
+        mobil_1_is_turning_left = false;
+    }
+
+    if (mobil_1_is_moving_forward) {
         mobil_1.translateZ(-moveSpeed);
-    }else if(mobil_1.position.z <= -2.8){
-        mobil_1.translateZ(-moveSpeed);
+    }
+
+    // Rotasi belok kiri/kanan
+    if (mobil_1_is_turning_left) {
         mobil_1.rotateY(turnSpeed);
     }
     
-    console.log(mobil_1.position.z);
+    // console.log(mobil_1.position.x);
+    // console.log(mobil_1.position.z);
+}
+
+let mobil_2_is_moving_forward = true;
+
+function mobil_2_jalan(delta){
+    if (mobil_2_is_moving_forward) {
+        mobil_2.translateX(moveSpeed);
+
+        if (mobil_2.position.x > -2.75 && mobil_2.position.x < -2.74) {
+            stopMoving();
+        }
+    }
+
+    if(mobil_2.position.x >= 7){
+        mobil_2_is_moving_forward = false;
+    }
+
+    // console.log(mobil_2.position.x);
+}
+
+function stopMoving() {
+    mobil_2_is_moving_forward = false;
+    setTimeout(startMoving, 2000);
+}
+
+function startMoving() {
+    mobil_2_is_moving_forward = true;
+}
+
+let mobil_4_is_moving_forward = true;
+let mobil_4_is_turning_left = false;
+let turnAngle = Math.PI / 2;
+
+let posisi;
+
+function mobil_4_jalan(delta){
+    posisi = mobil_4.position.z;
+    if (mobil_4.position.z <= -2.62) {
+        mobil_4_is_turning_left = true;
+    }
+
+    if(mobil_4.position.z <= -3.1349){
+        mobil_4_is_turning_left = false;
+    }
+
+    if (mobil_4_is_moving_forward) {
+        mobil_4.translateZ(-moveSpeed);
+    }
+
+    if(mobil_4.position.x <= -4.5){
+        mobil_4_is_moving_forward = false;
+    }
+
+    // Rotasi belok kiri
+    if (mobil_4_is_turning_left) {
+        mobil_4.rotateY(turnSpeed);
+    }
+
+    if(mobil_4.position.z < -3.1349){
+        if(posisi < mobil_4.position.z){
+            mobil_4.rotateY(-0.001);
+        }else if(posisi > mobil_4.position.z){
+            mobil_4.rotateY(0.001);
+        }
+    }
+
+    console.log(mobil_4.position.x)
 }
 
 // Fungsi animasi
@@ -250,8 +431,11 @@ function animate() {
     renderer.render(scene, camera);
 
     var delta = clock.getDelta();
+
     // updateMobilPosition(delta);
     mobil_1_jalan(delta);
+    mobil_2_jalan(delta);
+    mobil_4_jalan(delta)
 }
 
 // Panggil fungsi animasi
