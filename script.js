@@ -1,4 +1,4 @@
-import * as THREE from 'three';
+ import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
@@ -21,7 +21,7 @@ let cameraOffset = new THREE.Vector3(0, 5, -10); // Misalnya, kamera berada di b
 
 // Nilai kecepatan pergerakan dan rotasi mobil
 const moveSpeed = 0.01;
-const turnSpeed = 0.02;
+const turnSpeed = 0.02;   
 
 // Clock
 var clock = new THREE.Clock();
@@ -228,26 +228,28 @@ scene.add(light);
 // Inisialisasi OrbitControls
 var controls = new OrbitControls(camera, renderer.domElement);
 
-// // Konfigurasi kontrol kamera
-// controls.enableDamping = true;
-// controls.enabled = false;
-// camera.lookAt(5, 5, 5);
-// controls.enabled = true;
-// controls.autoRotate = false;
-// controls.dampingFactor = 0.05;
-// controls.rotateSpeed = 0.25;
-// controls.target.set(xMobil, yMobil, zMobil);
+// Konfigurasi kontrol kamera
+controls.enableDamping = true;
+controls.enabled = false;
+camera.lookAt(5, 5, 5);
+controls.enabled = true;
+controls.autoRotate = false;
+controls.dampingFactor = 0.05;
+controls.rotateSpeed = 0.25;
+controls.target.set(xMobil, yMobil, zMobil);
+
+let gerak = true;
 
 // Pendengar acara pada tombol keyboard
 document.addEventListener('keydown', function(event) {
     const keyCode = event.keyCode;
-    if (keyCode === 87) { // Tombol "W" ditekan
+    if (keyCode === 87 && gerak) { // Tombol "W" ditekan
         isMovingForward = true;
-    } else if (keyCode === 83) { // Tombol "S" ditekan
+    } else if (keyCode === 83 && gerak) { // Tombol "S" ditekan
         isMovingBackward = true;
-    } else if (keyCode === 65) { // Tombol "A" ditekan
+    } else if (keyCode === 65 && gerak) { // Tombol "A" ditekan
         isTurningLeft = true;
-    } else if (keyCode === 68) { // Tombol "D" ditekan
+    } else if (keyCode === 68 && gerak) { // Tombol "D" ditekan
         isTurningRight = true;
     }
 });
@@ -265,11 +267,11 @@ document.addEventListener('keyup', function(event) {
     }
 });
 
-// controls.addEventListener('change', function () {
-//     xCamera = controls.object.position.x;
-//     yCamera = controls.object.position.y;
-//     zCamera = controls.object.position.z;
-// });
+controls.addEventListener('change', function () {
+    xCamera = controls.object.position.x;
+    yCamera = controls.object.position.y;
+    zCamera = controls.object.position.z;
+});
 
 function updateMobilPosition(delta) {
     if (isMovingForward) {
@@ -319,6 +321,8 @@ function updateMobilPosition(delta) {
     if (mixer) {
         mixer.update(delta);
     }
+
+    console.log(mobil_player.position.z);
 }
 
 let mobil_1_is_moving_forward = false;
@@ -390,6 +394,8 @@ let mobil_4_is_turning_left = false;
 let turnAngle = Math.PI / 2;
 
 let posisi;
+let selesai_jatuh = false;
+let batas = false;
 
 function mobil_4_jalan(delta){
     posisi = mobil_4.position.z;
@@ -422,7 +428,31 @@ function mobil_4_jalan(delta){
         }
     }
 
-    console.log(mobil_4.position.x)
+    // console.log(mobil_4.position.x)
+}
+
+
+function cek_posisi_player(delta){
+    if(mobil_player.position.x <= -6.15){
+        selesai_jatuh = true;
+    }else if(mobil_player.position.x >= 13.17){
+        selesai_jatuh = true;
+    }else if(mobil_player.position.z >= 16.66){
+        selesai_jatuh = true;
+    }else if(mobil_player.position.z <= -12.6){
+        selesai_jatuh = true;
+    }
+
+    if(mobil_player.position.y <= 0.6 && !batas){
+        selesai_jatuh = true;
+    }
+    
+    if(selesai_jatuh){
+        selesai_jatuh = false;
+        batas = true;
+        alert("SIM mu nembak a?");
+        window.location.reload(true);
+    }
 }
 
 // Fungsi animasi
@@ -431,11 +461,12 @@ function animate() {
     renderer.render(scene, camera);
 
     var delta = clock.getDelta();
-
-    // updateMobilPosition(delta);
+    
+    updateMobilPosition(delta);
     mobil_1_jalan(delta);
     mobil_2_jalan(delta);
     mobil_4_jalan(delta)
+    cek_posisi_player(delta);
 }
 
 // Panggil fungsi animasi
@@ -443,24 +474,24 @@ animate();
 
 
 // Mendengarkan kejadian key press pada dokumen
-document.addEventListener('keydown', function(event) {
-    // Mendapatkan kode tombol yang ditekan
-    var keyCode = event.keyCode;
+// document.addEventListener('keydown', function(event) {
+//     // Mendapatkan kode tombol yang ditekan
+//     var keyCode = event.keyCode;
   
-    // Mengubah posisi kamera berdasarkan kunci yang ditekan
-    switch(keyCode) {
-      case 37: // Tombol panah kiri
-        camera.position.x -= 1; // Menggeser kamera ke kiri
-        break;
-      case 39: // Tombol panah kanan
-        camera.position.x += 1; // Menggeser kamera ke kanan
-        break;
-      case 38: // Tombol panah atas
-        camera.position.z -= 1; // Menggeser kamera ke depan
-        break;
-      case 40: // Tombol panah bawah
-        camera.position.z += 1; // Menggeser kamera ke belakang
-        break;
-    }
-  });
+//     // Mengubah posisi kamera berdasarkan kunci yang ditekan
+//     switch(keyCode) {
+//       case 37: // Tombol panah kiri
+//         camera.position.x -= 1; // Menggeser kamera ke kiri
+//         break;
+//       case 39: // Tombol panah kanan
+//         camera.position.x += 1; // Menggeser kamera ke kanan
+//         break;
+//       case 38: // Tombol panah atas
+//         camera.position.z -= 1; // Menggeser kamera ke depan
+//         break;
+//       case 40: // Tombol panah bawah
+//         camera.position.z += 1; // Menggeser kamera ke belakang
+//         break;
+//     }
+//   });
   
