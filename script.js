@@ -177,6 +177,34 @@ loader.load(
     }
 )
 
+let mobil_5;
+loader.load(
+    './assets/car_3.gltf',
+    function (gltf) {
+        mobil_5 = gltf.scene;
+        mobil_5.scale.set(1, 1, 1);
+
+        mobil_5.traverse(function (child) {
+            if (child.isMesh) {
+                child.receiveShadow = true;
+            }
+        });
+
+        mobil_5.castShadow = true;
+        mobil_5.position.set(8.5, 1, 8);
+
+        // const box = new THREE.Box3().setFromObject(mobil_1);
+        // mobilCenter = box.getCenter(new THREE.Vector3());
+
+        // Tambahkan objek GLTF ke objek grup
+        // gltfGroup.add(mobil_1);
+
+        console.log(mobil_5);
+        scene.add(mobil_5);
+    }
+)
+
+
 // Load Mobil Player
 let mobil_player;
 let mixer;
@@ -208,8 +236,9 @@ loader.load(
 )
 
 // Buat directional light
-var light = new THREE.DirectionalLight(0xffffff, 1);
-light.position.set(5, 10, 10)
+var light = new THREE.SpotLight(0xffffff, 1);
+light.position.set(xMobil, yMobil + 0.1, zMobil)
+light.target.position.set(xMobil, yMobil, zMobil)
 light.castShadow = true;
 
 // Tentukan area bayangan pada cahaya
@@ -467,6 +496,9 @@ function animate() {
     mobil_2_jalan(delta);
     mobil_4_jalan(delta)
     cek_posisi_player(delta);
+
+    light.position.set(xMobil, yMobil + 1, zMobil)
+    light.target.position.set(xMobil, yMobil, zMobil)
 }
 
 // Panggil fungsi animasi
